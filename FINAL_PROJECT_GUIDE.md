@@ -64,4 +64,9 @@ Avoid claiming that the CNN alone achieved the final lookahead benchmark.
 
 ## Public repository scope
 
-The public repository contains documentation, benchmark results, and downloadable Windows releases. The proprietary source code, datasets, model-development pipeline, and internal development artifacts are maintained privately.
+The public repository contains documentation, benchmark results, application screenshots, and downloadable Windows releases. The proprietary source code, datasets, model-development pipeline, and internal development artifacts are maintained privately.
+
+
+## Included media
+
+Application screenshots are available under `screenshots/`, and the benchmark figure is available under `results/`.

@@ -5,7 +5,13 @@ An AI-powered Classic Tetris project that learns placement decisions from tourna
 **Developed by Ghayda Ja'afreh**  
 Powered by PyTorch and Pygame.
 
-> **Public release notice:** This repository contains project documentation, benchmark results, and downloadable Windows releases. The proprietary source code, datasets, trained-model development pipeline, and internal development artifacts are maintained privately and are not included in this public repository.
+> **Public release notice:** This repository contains project documentation, benchmark results, application screenshots, and downloadable Windows releases. The proprietary source code, datasets, trained-model development pipeline, and internal development artifacts are maintained privately and are not included in this public repository.
+
+![Greedy CNN vs Final AI](screenshots/01-hero-greedy-vs-final.png)
+
+*Under the same seed and piece generator, the Greedy CNN reaches a terminal
+board after 224 pieces, while the final Lookahead + Safety agent continues
+with a controlled board beyond 300 pieces.*
 
 ## Download and run
 
@@ -32,6 +38,13 @@ Python and a dedicated NVIDIA GPU are not required.
 - Interactive AI, human, comparison, versus, replay, settings, audio, and screenshot modes.
 - Portable CPU-only Windows distribution.
 
+## Application interface
+
+![Tetris AI Lab Main Menu](screenshots/02-main-menu.png)
+
+*The Windows application includes AI play, human play, head-to-head comparison,
+replay viewing, themes, audio, help, and settings.*
+
 ## Final agent
 
 ```text
@@ -43,6 +56,11 @@ CNN policy_recovery_v3
 The learned model predicts one of 40 final placements (`4 rotations × 10 columns`). Illegal placements are masked before selection. The final agent reranks the model's strongest candidates using one-piece lookahead and applies a limited safety override only in risky states.
 
 The final application is therefore a **hybrid agent**, not a pure CNN-only system.
+
+![Final AI Agent](screenshots/03-final-ai-agent.png)
+
+*The final Lookahead + Safety agent maintains a low, controlled board after
+874 pieces and 347 cleared lines using the 7-bag generator with seed 42.*
 
 ## Verified results
 
@@ -66,6 +84,13 @@ The independent test set contains 9,180 samples from videos excluded from traini
 | 7-bag, 30 games, 10,000-piece cap | — | 10,000 mean pieces; 100% reached cap |
 
 These are capped simulator benchmarks, not claims about official competitive Classic Tetris performance.
+
+## Performance evolution
+
+![Agent Performance Evolution](results/06-agent-performance.png)
+
+*Performance improved progressively from the pure CNN baseline to the final
+hybrid agent combining Top-5 one-piece lookahead and a limited safety filter.*
 
 ## Dataset preparation
 
@@ -103,6 +128,14 @@ The Windows application includes:
 - **Greedy vs Final AI** — visual comparison between direct CNN argmax and the final hybrid agent.
 - **Replay Viewer** — view saved games.
 - **Settings** — sound, volume, theme, fullscreen, seed, speed, and generator options.
+
+## Human vs Final AI
+
+![Human vs Final AI](screenshots/04-human-vs-ai.png)
+
+*Human and Final AI play with the same seed and piece generator. The final
+agent remains stable after more than 600 pieces while the human board
+approaches a critical state.*
 
 ## Human controls
 
@@ -146,6 +179,14 @@ The Windows application includes:
 - [`CHANGELOG.md`](CHANGELOG.md) — public release history.
 - [`NOTICE.md`](NOTICE.md) — ownership, distribution, and trademark notice.
 - [`LICENSE`](LICENSE) — all-rights-reserved terms.
+
+
+## About the application
+
+![About Screen](screenshots/05-about.png)
+
+*The About screen presents the project identity, core methods, and developer
+credit for the public Windows release.*
 
 ## Ownership and licensing
 
