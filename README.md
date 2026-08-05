@@ -1,21 +1,36 @@
 # Tetris AI Lab
 
-A reproducible Classic Tetris project that learns placement decisions from tournament footage, improves recovery through simulator-generated data, and deploys the resulting agent in an interactive Pygame application.
+An AI-powered Classic Tetris project that learns placement decisions from tournament footage, improves recovery through simulator-generated difficult states, and deploys the resulting agent in an interactive Windows application.
 
 **Developed by Ghayda Ja'afreh**  
 Powered by PyTorch and Pygame.
+
+> **Public release notice:** This repository contains project documentation, benchmark results, and downloadable Windows releases. The proprietary source code, datasets, trained-model development pipeline, and internal development artifacts are maintained privately and are not included in this public repository.
+
+## Download and run
+
+Download the latest Windows release:
+
+**[Download Tetris AI Lab v1.0.0](https://github.com/ghayda-njaafreh/tetris-ai-lab/releases/tag/v1.0.0)**
+
+1. Download `TetrisAILab-Windows-CPU.zip`.
+2. Extract the complete ZIP file.
+3. Open the extracted `TetrisAILab` folder.
+4. Run `TetrisAILab.exe`.
+
+Python and a dedicated NVIDIA GPU are not required.
 
 ## Project highlights
 
 - Video-to-dataset pipeline for 20×10 Classic Tetris boards.
 - Strict code-based data cleaning and leakage-resistant video-level splits.
 - CNN imitation policy with legal-action masking.
-- Recovery/DAgger-style data generation from model-visited states.
+- Recovery/DAgger-style training using simulator-generated difficult states.
 - Simulator-verified horizontal reflection augmentation.
 - Top-5 one-piece lookahead and a limited safety filter.
 - Benchmarks across Uniform, NES-approximate, and 7-bag piece generators.
 - Interactive AI, human, comparison, versus, replay, settings, audio, and screenshot modes.
-- Windows packaging with PyInstaller.
+- Portable CPU-only Windows distribution.
 
 ## Final agent
 
@@ -25,7 +40,9 @@ CNN policy_recovery_v3
 + Safety filter
 ```
 
-The learned model predicts one of 40 final placements (`4 rotations × 10 columns`). Illegal placements are masked before selection. The final agent reranks the model's strongest candidates using a one-piece lookahead and applies a small safety override only in risky states.
+The learned model predicts one of 40 final placements (`4 rotations × 10 columns`). Illegal placements are masked before selection. The final agent reranks the model's strongest candidates using one-piece lookahead and applies a limited safety override only in risky states.
+
+The final application is therefore a **hybrid agent**, not a pure CNN-only system.
 
 ## Verified results
 
@@ -52,7 +69,7 @@ These are capped simulator benchmarks, not claims about official competitive Cla
 
 ## Dataset preparation
 
-The complete cleaning step is implemented in `prepare_training_data.py`.
+The private development pipeline produced the following strict cleaning report:
 
 ```text
 Raw samples:                 58,636
@@ -63,7 +80,7 @@ Missing board files:              0
 Train / validation / test: 39,367 / 8,949 / 9,180
 ```
 
-Cleaning includes:
+Cleaning included:
 
 - development-test source exclusion;
 - exact-match and zero-cell-error requirements;
@@ -74,43 +91,18 @@ Cleaning includes:
 
 The v3 training set contains 79,717 samples after recovery data and simulator-verified mirror augmentation. All 26,572 requested mirrored samples were created with zero mapping failures.
 
-## Installation
+The private development project contains the recovery-data generation, simulator-verified augmentation, model-training, and evaluation pipelines used to produce the final policy. These proprietary implementation files are not included in the public repository.
 
-Python 3.10 or newer is required. The project was tested on Windows with Python 3.13.
+## Application modes
 
-```powershell
-python -m venv myEnv
-.\myEnv\Scripts\Activate.ps1
-python -m pip install -U pip
-pip install -e ".[dev,ml,gui]"
-pytest
-```
+The Windows application includes:
 
-## Run the application
-
-Open the main menu:
-
-```powershell
-python play_tetris.py
-```
-
-Direct modes:
-
-```powershell
-python play_tetris.py --mode ai --piece-source 7bag --seed 42
-python play_tetris.py --mode human --piece-source 7bag --seed 42
-python play_tetris.py --mode versus --piece-source 7bag --seed 42
-python play_tetris.py --mode compare --piece-source 7bag --seed 42 --speed 2
-python play_tetris.py --mode replay
-```
-
-Available generators:
-
-```text
-uniform
-nes_approx
-7bag
-```
+- **AI Agent** — the final CNN + lookahead + safety agent plays automatically.
+- **Human Play** — real-time falling pieces with keyboard controls.
+- **Human vs Final AI** — human and AI use the same seed and piece generator.
+- **Greedy vs Final AI** — visual comparison between direct CNN argmax and the final hybrid agent.
+- **Replay Viewer** — view saved games.
+- **Settings** — sound, volume, theme, fullscreen, seed, speed, and generator options.
 
 ## Human controls
 
@@ -127,124 +119,36 @@ nes_approx
 | F12 | Save screenshot |
 | Esc | Return or quit |
 
-## Reproduce the model pipeline
+## Method summary
 
-### 1. Prepare and clean data
-
-```powershell
-python prepare_training_data.py
-pytest
-```
-
-### 2. Train the baseline
-
-```powershell
-python train_policy.py --epochs 15 --batch-size 256 --output artifacts\policy_baseline
-```
-
-### 3. Evaluate offline
-
-```powershell
-python evaluate_policy.py --data data\prepared\test.jsonl --checkpoint artifacts\policy_baseline\best.pt
-```
-
-### 4. Generate recovery data and train v3
-
-The repository includes the recovery, augmentation, and training scripts used to create `policy_recovery_v3`:
-
-```text
-generate_recovery_dataset.py
-build_augmented_training_data.py
-augment_training_data.py
-train_policy.py
-```
-
-Final v3 training configuration:
-
-```text
-Train samples:        79,717
-Validation samples:    8,949
-Maximum epochs:           30
-Batch size:              256
-Learning rate:        0.0005
-Class-weight power:      0.15
-Source balancing:        0.10
-Label smoothing:         0.02
-Gradient clipping:        1.0
-Early-stopping patience:    6
-```
-
-### 5. Gameplay evaluation
-
-```powershell
-python evaluate_gameplay.py --checkpoint artifacts\policy_recovery_v3\best.pt --episodes 100 --max-pieces 2000 --seed 42
-
-python evaluate_gameplay_lookahead.py `
-  --checkpoint artifacts\policy_recovery_v3\best.pt `
-  --episodes 30 `
-  --max-pieces 10000 `
-  --seed 42 `
-  --policies lookahead_top5 lookahead_safety heuristic
-```
-
-### 6. Piece-generator benchmark
-
-```powershell
-python compare_piece_generators.py `
-  --checkpoint artifacts\policy_recovery_v3\best.pt `
-  --output artifacts\policy_recovery_v3\rng_benchmark `
-  --episodes 30 `
-  --max-pieces 10000 `
-  --seed 42 `
-  --generators uniform nes_approx 7bag `
-  --policies lookahead_top5 lookahead_safety heuristic
-```
-
-## Windows build
-
-Create a portable Windows folder:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build_windows.ps1
-```
-
-The application is generated at:
-
-```text
-dist\TetrisAILab\TetrisAILab.exe
-```
-
-Keep the entire `dist\TetrisAILab` folder together. For transfer:
-
-```powershell
-Compress-Archive -Path .\dist\TetrisAILab -DestinationPath .\dist\TetrisAILab-Windows.zip -Force
-```
-
-## Repository structure
-
-```text
-src/tetris_imitation/    video extraction and board inference
-src/tetris_ml/           datasets, model, lookahead, and policy utilities
-src/tetris_game/         Pygame application and controllers
-configs/                 video and batch configurations
-data/                    generated datasets and manifests
-artifacts/               checkpoints, analyses, benchmarks, replays, screenshots
-play_tetris.py           interactive application entry point
-train_policy.py          model training
-evaluate_policy.py       offline evaluation
-evaluate_gameplay*.py    closed-loop evaluation
-```
+1. Tournament footage was processed into stable 20×10 board states.
+2. Candidate tetromino placements were simulated and matched against observed next boards.
+3. Strict automated cleaning removed ambiguous, erroneous, development-test, and duplicate samples.
+4. A CNN policy learned final placement decisions with legal-action masking.
+5. Recovery training added difficult states visited by the model itself.
+6. Horizontal reflection augmentation was accepted only when the mirrored label was exactly verified by the simulator.
+7. Top-5 one-piece lookahead reranked strong CNN candidates.
+8. A limited safety filter prevented rare catastrophic placements.
 
 ## Responsible use and limitations
 
 - Tournament footage should only be processed when its use is permitted.
 - Source clips and broadcast-derived images should not be redistributed without appropriate permission.
 - `nes_approx` is an explicitly approximate generator and not a cycle-accurate NES RNG implementation.
-- Gameplay results depend on this repository's simulator, action representation, generator, caps, seed range, and safety settings.
+- Gameplay results depend on the project's simulator, action representation, generator, caps, seed range, and safety settings.
 - The final agent is hybrid: the CNN is learned, while lookahead and safety use simulator-based board evaluation.
+- The public Windows build is provided for demonstration and evaluation only.
 
 ## Documentation
 
-- `PROJECT_REPORT.md` — methodology, experiments, and findings.
-- `RELEASE_CHECKLIST.md` — final Windows and GitHub release checks.
-- `FINAL_PROJECT_GUIDE.md` — quick demonstration guide.
+- [`PROJECT_REPORT.md`](PROJECT_REPORT.md) — methodology, experiments, findings, and limitations.
+- [`FINAL_PROJECT_GUIDE.md`](FINAL_PROJECT_GUIDE.md) — quick demonstration guide for the Windows release.
+- [`CHANGELOG.md`](CHANGELOG.md) — public release history.
+- [`NOTICE.md`](NOTICE.md) — ownership, distribution, and trademark notice.
+- [`LICENSE`](LICENSE) — all-rights-reserved terms.
+
+## Ownership and licensing
+
+Copyright © 2026 Ghayda Ja'afreh. All rights reserved.
+
+The complete proprietary source code, datasets, model-development pipeline, and internal artifacts are not published in this repository. No permission is granted to copy, modify, redistribute, sublicense, sell, publish, reverse engineer, or reuse the project without prior written permission.

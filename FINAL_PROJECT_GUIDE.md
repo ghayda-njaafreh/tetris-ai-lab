@@ -3,24 +3,32 @@
 **Developed by Ghayda Ja'afreh**  
 Powered by PyTorch and Pygame.
 
-## Fast demonstration
+## Download the Windows release
 
-```powershell
-python play_tetris.py
-```
+1. Open the latest release page:
+   [Tetris AI Lab v1.0.0](https://github.com/ghayda-njaafreh/tetris-ai-lab/releases/tag/v1.0.0)
+2. Download `TetrisAILab-Windows-CPU.zip`.
+3. Extract the complete ZIP file.
+4. Open the extracted `TetrisAILab` folder.
+5. Run `TetrisAILab.exe`.
 
-Recommended sequence:
+Python and a dedicated NVIDIA GPU are not required.
 
-1. Open **About** to introduce the project.
-2. Run **Greedy vs Final AI** with seed 42.
-3. Run **AI Agent** using `7bag`.
+## Recommended demonstration sequence
+
+1. Open **About** to introduce the project and development credit.
+2. Run **Greedy vs Final AI** with seed 42 to show the effect of lookahead and safety filtering.
+3. Run **AI Agent** using the `7bag` generator.
 4. Open **Human Play** to demonstrate real-time controls.
-5. Open **Replay Viewer**.
-6. Show benchmark results from the README or project report.
+5. Open **Human vs Final AI** to demonstrate a fair shared-seed comparison.
+6. Save a replay and open **Replay Viewer**.
+7. Show the benchmark summary from the README or technical report.
 
-## Key result to explain
+## Main result to explain
 
-The learned CNN alone achieved 68.43% Top-1 and 89.59% Top-3 accuracy on the held-out test set. Recovery training improved closed-loop play, and the final Top-5 lookahead plus safety agent reached the 10,000-piece benchmark cap in all 30 tested 7-bag games.
+The learned CNN achieved **68.43% Top-1** and **89.59% Top-3** accuracy on the held-out test set. Recovery training improved closed-loop play, while Top-5 one-piece lookahead and a limited safety filter produced the strongest final agent.
+
+In the 7-bag benchmark, the final agent reached the **10,000-piece cap in all 30 tested games**.
 
 ## Accurate wording
 
@@ -30,9 +38,30 @@ Use:
 
 Avoid claiming that the CNN alone achieved the final lookahead benchmark.
 
-## Windows demonstration
+## Suggested presentation points
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\build_windows.ps1
-.\dist\TetrisAILab\TetrisAILab.exe
-```
+- The dataset was extracted from tournament footage and cleaned entirely through code.
+- Splits were made by complete videos to reduce leakage.
+- Recovery training exposed the model to damaged and high-risk boards.
+- Mirror augmentation was accepted only when the simulator verified the transformed label exactly.
+- The CNN frequently ranked good moves highly, while lookahead improved final ranking.
+- Safety changed only a small fraction of decisions but prevented rare catastrophic placements.
+
+## Human controls
+
+| Key | Action |
+|---|---|
+| Left / Right | Move piece |
+| Up or X | Rotate clockwise |
+| Z | Rotate counter-clockwise |
+| Down | Soft drop |
+| Space | Hard drop |
+| P | Pause where supported |
+| R | Restart with the same seed |
+| S | Save replay |
+| F12 | Save screenshot |
+| Esc | Return or quit |
+
+## Public repository scope
+
+The public repository contains documentation, benchmark results, and downloadable Windows releases. The proprietary source code, datasets, model-development pipeline, and internal development artifacts are maintained privately.
