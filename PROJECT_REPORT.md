@@ -26,7 +26,7 @@ The split is performed by complete source video rather than by individual frame,
 
 The policy input contains board occupancy, hole information, and a learned piece embedding. The model outputs 40 placement logits representing four rotations and ten columns. A legal-action mask removes impossible placements.
 
-The baseline was trained with cross-entropy and evaluated on two held-out videos. Recovery versions add states visited by the model itself and labels produced by the repository's heuristic expert.
+The baseline was trained with cross-entropy and evaluated on two held-out videos. Recovery versions add states visited by the model itself and labels produced by the project's heuristic expert.
 
 ## 4. Recovery and augmentation
 
