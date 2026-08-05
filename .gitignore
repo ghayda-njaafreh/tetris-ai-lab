@@ -1,0 +1,34 @@
+﻿# Windows
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Private project materials
+src/
+data/
+artifacts/
+build/
+dist/
+*.pt
+*.pth
+*.ckpt
+*.jsonl
+*.csv
+*.npy
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+myEnv/
+
+# Private credentials
+.env
+cookies.txt
+*.sqlite
+*.db
