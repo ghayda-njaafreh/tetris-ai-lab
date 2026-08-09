@@ -85,12 +85,14 @@ The independent test set contains 9,180 samples from videos excluded from traini
 
 These are capped simulator benchmarks, not claims about official competitive Classic Tetris performance.
 
-## Performance evolution
+## Agent Performance Evolution
 
 ![Agent Performance Evolution](results/06-agent-performance.png)
 
-*Performance improved progressively from the pure CNN baseline to the final
-hybrid agent combining Top-5 one-piece lookahead and a limited safety filter.*
+*Performance evolution across project evaluation summaries. The final policy
+comparison uses a common 100-episode, 2,000-piece benchmark, while earlier
+baseline stages retain their original evaluation settings. Values are loaded
+directly from the project's recorded summary files.*
 
 ## Dataset preparation
 
