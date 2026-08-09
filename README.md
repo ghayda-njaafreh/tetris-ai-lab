@@ -45,6 +45,23 @@ Python and a dedicated NVIDIA GPU are not required.
 *The Windows application includes AI play, human play, head-to-head comparison,
 replay viewing, themes, audio, help, and settings.*
 
+## Demo video
+
+A short public demonstration video is included in this repository:
+
+**[Download / watch the demo video](demo/tetris-ai-lab-demo-v1.0.0.mp4)**
+
+The video presents:
+
+- the Windows application interface,
+- Greedy CNN vs Final AI comparison,
+- the Final AI agent in action,
+- Human vs Final AI mode,
+- the About screen,
+- and the performance evolution summary.
+
+> Benchmark values shown in the performance-evolution figure are loaded directly from project-generated summary files.
+
 ## Final agent
 
 ```text

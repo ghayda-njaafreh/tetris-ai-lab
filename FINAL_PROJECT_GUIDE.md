@@ -70,3 +70,8 @@ The public repository contains documentation, benchmark results, application scr
 ## Included media
 
 Application screenshots are available under `screenshots/`, and the benchmark figure is available under `results/`.
+
+
+A short demonstration video is included in the public repository:
+
+`demo/tetris-ai-lab-demo-v1.0.0.mp4`

@@ -5,7 +5,7 @@
 **Developed by Ghayda Ja'afreh**  
 Powered by PyTorch and Pygame.
 
-The public repository contains project documentation, benchmark results, application screenshots, and downloadable Windows releases. Demonstration video may be added in a future update.
+The public repository contains project documentation, benchmark results, application screenshots, a public demonstration video, and downloadable Windows releases.
 
 The complete proprietary source code, training pipeline, datasets, trained-model development files, and internal development artifacts are not included.
 

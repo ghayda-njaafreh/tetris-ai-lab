@@ -30,3 +30,8 @@ All notable public release changes are documented in this file.
 
 - Published `TetrisAILab-Windows-CPU.zip` as the public Windows release asset.
 - Proprietary source code, datasets, and internal development artifacts remain private.
+
+### Updated
+
+- Added a public 16:9 demonstration video to the repository.
+- Replaced the performance-evolution figure with the version generated directly from project summary files.
